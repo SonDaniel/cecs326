@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
-#include <queue>
+#include <list>
 using namespace std;
 
 class MemoryBlockTable {
@@ -12,12 +12,21 @@ class MemoryBlockTable {
         bool mem [128];
 };
 
+class ProcessControlBlock {
+    public:
+
+    private:
+        int pid;
+        
+};
+
+//global variables
 MemoryBlockTable mem;
 int pid = 0;
 
 int menu() {
-    int choice;
-    cout << endl << endl;
+    int choice; //variable for user choice
+    cout << endl << endl; //display menu
     cout << " ________________________________________________" << endl;
     cout << "| Menu                                          |" << endl;
     cout << "|_______________________________________________|" << endl;
@@ -29,16 +38,28 @@ int menu() {
     cout << "| exit                                     [4]  |" << endl;
     cout << "|_______________________________________________|" << endl;
     cout << "choice: ";
-    cin >> choice;
-    return choice;
+    cin >> choice; //get user input
+    return choice; //return user input
+}
+
+void initiate() {
+    struct pcb {
+        int pid;
+        
+    }
+    int size = rand() % 118 + 1; //Select random size from 1 - 118
 }
 
 int main() {
+    //Set variables
     bool exit = false;
+    mem.setSpace(118);
+
+    //start of program
     while(!exit) {
         switch (menu()) {
             case 1: {
-                
+                initiate();
                 break;
             }
             case 2:
