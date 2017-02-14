@@ -81,9 +81,7 @@ void MemoryBlockTable::deallocateMemory(int * pageTable, int size) {
     for(int ii = 0; ii < size; ++ii) {
         mem[pageTable[ii]] = false; //Set memory to free
     }
-    cout << space << endl;
     space = space + size; //update space variable
-    cout << space << endl;
 }
 /***********************************************************************/
 //                  End of MemoryBlockTable Class                      //
@@ -173,7 +171,7 @@ user input
 */
 int menu() {
     int choice; //variable for user choice
-    cout << endl << endl; //display menu
+    cout << endl; //display menu
     cout << " ________________________________________________" << endl;
     cout << "| Menu                                          |" << endl;
     cout << "|_______________________________________________|" << endl;
@@ -191,6 +189,7 @@ int menu() {
 
 //Initialization function that will create a PCB and allocate Memory to MBT
 void initiate() {
+    cout << "Current Memory Size: " << mem.getSpace() << endl;
     //Select random size from 1 - 30 to allocate dynamic memory
     int size = rand() % 30 + 1;
     
@@ -203,10 +202,13 @@ void initiate() {
         readyQueue.push_back(pcb);
 
         mem.setSpace(mem.getSpace() - size); //update space size
-        cout << "Memory Space: " << mem.getSpace() << endl;
+        cout << "Memory Space now: " << mem.getSpace() << endl;
     } else { //Not enough space in memory block table
+        
+        cout << endl <<  "Error: Insufficient free blocks are available in the Memory Block Table " << endl;
+        cout << "Process Control Block size requirement: " << size << endl;
+        cout << "Memory Block Table space available: " << mem.getSpace() << endl;
         delete pcb; //delete PCB pointer
-        cout << "Error: Insufficient free blocks are available in the Memory Block Table " << endl;
     }
 }
 
@@ -221,6 +223,12 @@ void printReadyQueue() {
 
 //User selects a Process to terminate based of PID
 void terminateProcess() {
+    cout << "Ready Queue Process Block ID: ";
+    for(int ii = 0; ii < readyQueue.size(); ii++) {
+        ProcessControlBlock * temp = readyQueue.at(ii);
+        cout << (temp)->getPID() << " | ";
+    }
+    cout << endl;
     int choice;
     cout << "Terminate process PID: ";
     cin >> choice;
@@ -279,7 +287,5 @@ int main() {
                 cout << "Invalid selection" << endl;
         }
     }
-
-    
     return 0;
 }
