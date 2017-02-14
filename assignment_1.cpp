@@ -2,6 +2,11 @@
 Daniel Son
 CECS 326 - Shui Lam
 Assignment 1 - Dynamic Memory Allocation
+
+Assignment prompt:
+This assignment serves as a review of C/C++ programming that includes dynamic memory 
+allocation, pointer, struct, queue, array, and random number generation. The program is to implement 
+much simplified operations for part of the process and memory management in operating systems.
 */
 #include <iostream>
 #include <stdlib.h>
