@@ -45,7 +45,7 @@ class MemoryBlockTable {
         int getSpace() {return space;}
         void allocateMemory(int * pageTable, int size);
         void deallocateMemory(int * pageTable, int size);
-
+        void displayMem();
     private:
         int space;
         bool mem [128];
@@ -67,13 +67,16 @@ MemoryBlockTable::~MemoryBlockTable() {
 
 //Member function definition allocationMemory
 void MemoryBlockTable::allocateMemory(int * pageTable, int size) {
+    cout << "Page Table: " << endl;
     for(int ii = 0, jj = 0; ii < 128 && jj < size; ++ii) {
         if(!mem[ii]) {
             pageTable[jj] = ii; //initialize memory location
+            cout << pageTable[jj] << " | ";
             jj++; //increment counter
             mem[ii] = true; //Set memory to used
         }
     }
+    cout << endl;
 }
 
 //Member function definition deallocateMemory
@@ -82,6 +85,14 @@ void MemoryBlockTable::deallocateMemory(int * pageTable, int size) {
         mem[pageTable[ii]] = false; //Set memory to free
     }
     space = space + size; //update space variable
+}
+
+void MemoryBlockTable::displayMem() {
+    cout << "Memory Block Table: " << endl;
+    for(int ii = 0; ii < 128; ++ii) {
+        cout << mem[ii] << " | ";
+    }
+    cout << endl;
 }
 /***********************************************************************/
 //                  End of MemoryBlockTable Class                      //
@@ -201,7 +212,9 @@ void initiate() {
         mem.allocateMemory(pcb->getPageTable(), pcb->getSize());
         readyQueue.push_back(pcb);
 
+        mem.displayMem(); //Show Memory
         mem.setSpace(mem.getSpace() - size); //update space size
+
         cout << "Memory Space now: " << mem.getSpace() << endl;
     } else { //Not enough space in memory block table
         
