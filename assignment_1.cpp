@@ -263,7 +263,6 @@ void exitProgram() {
 int main() {
     //Set variables
     bool exit = false;
-    mem.setSpace(118);
 
     //start of program
     while(!exit) {
