@@ -36,6 +36,8 @@ using namespace std;
     void deallocateMemory(int * pageTable, int size):
                            Function will take pageTable pointer and deallocate mem array using 
                            int array pageTable stored. Parameter size is the size of the pageTable.
+                    
+    void displayMem()    : Display's memory block table array
 */
 class MemoryBlockTable {
     public:
@@ -87,6 +89,7 @@ void MemoryBlockTable::deallocateMemory(int * pageTable, int size) {
     space = space + size; //update space variable
 }
 
+//Displays memory block table memory
 void MemoryBlockTable::displayMem() {
     cout << "Memory Block Table: " << endl;
     for(int ii = 0; ii < 128; ++ii) {
