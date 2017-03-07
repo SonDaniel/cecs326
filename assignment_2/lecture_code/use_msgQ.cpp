@@ -53,24 +53,24 @@ void child_proc_two(int qid) {
 }
 
 int main() {
-    int qid = msgget(IPC_PRIVATE, IPC_EXCL|IPC_CREAT|0600);
+    int qid = msgget(IPC_PRIVATE, IPC_EXCL|IPC_CREAT|0600); //create queue
 
     //spawning two child processes
-    pid_t cpid = fork();
+    pid_t cpid = fork(); //create child process
     if(cpid == 0) {
-        child_proc_one(qid);
-        exit(0);
+        child_proc_one(qid); //call child process function one
+        exit(0); //terminate child
     }
     cpid = fork();
     if(cpid == 0) {
-        child_proc_two(qid);
-        exit(0);
+        child_proc_two(qid); //call child process function two
+        exit(0); //terminate child
     }
     while(wait(NULL) != -1); //waiting for both children to terminate
 
     msgctl(qid, IPC_RMID, NULL); //remove queue from kernel
 
-    cout << "parent proc: " << getpid() << " now exits" << endl; 
+    cout << "parent process: " << getpid() << " now exiting" << endl; //display parent id
 
     exit(0);
 }
