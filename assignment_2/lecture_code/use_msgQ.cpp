@@ -1,3 +1,11 @@
+/*
+Daniel Son
+CECS 326 - Shui Lam
+Assignment 2 - use_msgQ
+
+Lecture Code
+
+*/
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -13,7 +21,12 @@ struct buf {
     long mtype; //required
     char greeting[50]; //message content
 };
-
+/*
+    child_proc_one is a function that a process calls that gives it the queue id. 
+    The function creates a structure for the message. It then checks for any messages
+    with message type of 113. Once message is received, it displays. It then takes the message
+    and adds to it 'and Adios'. It then sends the message with a message type of 114.
+*/
 void child_proc_one(int qid) {
     buf msg; //creates message object
     int size = sizeof(msg) - sizeof(long); //creates size of message object
@@ -30,6 +43,13 @@ void child_proc_one(int qid) {
     cout << getpid() << ": now exits" << endl; //exit text
 }
 
+/*
+    child_proc_two is a function a process calls that passes in a queue id. It then 
+    creates a msg object for sending and receiving. It creates a message of message type 12.
+    Sends the message to the queue. It then prepares another message saying 'Hello There' and 
+    sends it with a type of 113. It checks for any message of type 114 and once recieved, it displays.
+
+*/
 void child_proc_two(int qid) {
     buf msg; //creates message object
     int size = sizeof(msg) - sizeof(long); //creates size of message object
@@ -52,6 +72,13 @@ void child_proc_two(int qid) {
     cout << getpid() << ": now exits" << endl; //display exit of pid 
 }
 
+/*
+    Main function is the beginning of the program. The program will create a queue id 
+    from the interprocess communication. It then creates a child process and calls the
+    function child_proc_one. Creates another child process and calls child_proc_two. 
+    Program then waits until child process is done. After, it removes queue from kernel
+    and exits.
+*/
 int main() {
     int qid = msgget(IPC_PRIVATE, IPC_EXCL|IPC_CREAT|0600); //create queue
 

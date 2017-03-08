@@ -11,6 +11,7 @@ The master process should first acquire a message queue from the operating syste
 The sender process should prompt user for a line of input, then send the input line to receiver via the message queue created by master.  Make sure that the prompt identifies the process making the prompt is sender along with its PID.
 
 The receiver process retrieves a message from the message queue, and output the message on the screen.  Make sure the output identifies that the line is printed by receiver along with PID.
+
 */
 #include <sys/types.h>
 #include <sys/ipc.h>

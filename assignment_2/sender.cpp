@@ -4,6 +4,7 @@ CECS 326 - Shui Lam
 Assignment 2 - Process Communication
 
 Sender Program Code
+
 */
 #include <sys/types.h>
 #include <sys/ipc.h>
