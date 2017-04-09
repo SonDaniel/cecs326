@@ -1,4 +1,4 @@
-#include "./registration.h"
+#include "registration.h"
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -20,7 +20,7 @@ int	shmid, ret;
 void rpterror(char *), srand(), perror(), sleep();
 void sell_seats();
 
-int main(int argc, char* argv[]) {
+main(int argc, char* argv[]) {
     if (argc < 2) {
         fprintf (stderr, "Usage:, %s shmid\n", argv[0]);
         exit(1);
