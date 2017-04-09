@@ -1,9 +1,9 @@
 #include "./registration.h"
-#include <types.h>
-#include <ipc.h>
-#include <sem.h>
-#include <shm.h>
-#include <wait.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/shm.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <iostream>
@@ -11,13 +11,6 @@
 #include <memory.h>
 
 using namespace std;
-
-struct CLASS {
-    char class_number[6];
-    char date[7];
-    char title[50];
-    int seats_left;
-};
 
 CLASS *class_ptr;
 void *memptr;
@@ -27,7 +20,7 @@ int	shmid, ret;
 void rpterror(char *), srand(), perror(), sleep();
 void sell_seats();
 
-main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     if (argc < 2) {
         fprintf (stderr, "Usage:, %s shmid\n", argv[0]);
         exit(1);

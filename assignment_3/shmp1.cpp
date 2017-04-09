@@ -1,8 +1,8 @@
 #include "./registration.h"
-#include <types.h>
-#include <ipc.h>
-#include <shm.h>
-#include <wait.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <iostream>
@@ -17,7 +17,7 @@ int	shm_init( void * );
 void wait_and_wrap_up( int [], void *, int );
 void rpterror( char *, char * );
 
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     int child[NCHILD], i, shmid, semid; //Initialize variables
     void	*shm_ptr;   //initialize shm ptr variable
     char	ascshmid[10], ascsemid[10], pname[14];
