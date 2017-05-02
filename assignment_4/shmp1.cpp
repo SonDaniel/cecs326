@@ -9,6 +9,7 @@ As you have come to understand, the shmp1.cpp and shmc1.cpp you ran in Assignmen
 Two implementations of semaphore are commonly available on most distributions of UNIX and Linux operating systems. The System V implementation includes semget(), semctl(), and semop(), and a struct sembuf used in the semop() calls, which are defined in <sys/sem.h>. The POSIX implementation includes sem_destroy(), sem_wait(), sem_post(), sem_open() for named semaphore and sem_init() for unnamed semaphore, which are defined in <semaphore.h>. You may use either one of these implementations. Details on the definition of these functions and their use may be found on Linux man pages.
 
 file: shmp1.cpp
+compile: g++ shmp1.cpp -o shmp1 -lpthread
 */
 //Libraries to include
 #include "registration.h"
@@ -21,6 +22,8 @@ file: shmp1.cpp
 #include <iostream>
 #include <stdio.h>
 #include <memory.h>
+#include <semaphore.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -29,17 +32,21 @@ CLASS myclass = { "1001", "120186", "Operating Systems", 15 }; //Creating class 
 #define NCHILD	3   //defining constant variable
 int	shm_init( void * ); //declaring shm_init function that takes in pointer
 
+sem_t *semDes;
+
 //declaring wait_and_wrap_up function that takes in array of int, pointer, and int
 void wait_and_wrap_up( int [], void *, int );  
 void rpterror( char *, char * ); //declaring rpterror function that takes in two pointer chars
 
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     int child[NCHILD], i, shmid, semid; //Initialize variables
     void	*shm_ptr;   //initialize shm ptr variable
     char	ascshmid[10], ascsemid[10], pname[14];  //Initialzing character array variables
     strcpy (pname, argv[0]);    //Set pname passed in argument
     shmid = shm_init(shm_ptr);  //call shm_init function and get back share memory id
     sprintf (ascshmid, "%d", shmid);
+
+    semDes = sem_open("test", O_CREAT, S_IRWXU);
 
     //Loop through NCHILD amount of times
     for (i = 0; i < NCHILD; i++) {
@@ -51,7 +58,7 @@ main(int argc, char *argv[]) {
                 rpterror ("fork failure", pname); //
                 exit(1); //exit program with code 1
 
-            case 0: 
+            case 0:
                 sprintf (pname, "shmc%d", i+1); //print pname with index number
                 execl("shmc1", pname, ascshmid, (char *)0); //execute program shmc1 passing in params
                 perror ("execl failed"); //print error 

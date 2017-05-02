@@ -9,6 +9,7 @@ As you have come to understand, the shmp1.cpp and shmc1.cpp you ran in Assignmen
 Two implementations of semaphore are commonly available on most distributions of UNIX and Linux operating systems. The System V implementation includes semget(), semctl(), and semop(), and a struct sembuf used in the semop() calls, which are defined in <sys/sem.h>. The POSIX implementation includes sem_destroy(), sem_wait(), sem_post(), sem_open() for named semaphore and sem_init() for unnamed semaphore, which are defined in <semaphore.h>. You may use either one of these implementations. Details on the definition of these functions and their use may be found on Linux main pages.
 
 file: shmc1.cpp
+compile: g++ shmc1.cpp -o shmc1 -lpthread
 */
 //Libraries to include
 #include "registration.h"
@@ -22,6 +23,8 @@ file: shmc1.cpp
 #include <iostream>
 #include <stdio.h>
 #include <memory.h>
+#include <sys/sem.h>
+#include <semaphore.h>
 
 using namespace std;
 
@@ -30,6 +33,8 @@ CLASS *class_ptr; // pointer of CLASS variable
 void *memptr; //memory pointer variable
 char *pname; //pname pointer variable
 int	shmid, ret; //shared memory id and ret variable
+
+sem_t *sem_des;
 
 void rpterror(char *), srand(), perror(), sleep(); //declare function rpterror
 void sell_seats(); //declare sell_seats function
@@ -59,20 +64,23 @@ main(int argc, char* argv[]) {
 void sell_seats() {
     int all_out = 0; //declare variable with value 0
     srand((unsigned) getpid()); //get random process id
-    
-    while ( !all_out) { /* loop to sell all seats */
+    sem_des = sem_open("test", 0, 0644, 0);
+    while(!all_out) {
+        
         if (class_ptr->seats_left > 0) {
             sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             class_ptr->seats_left--; //decrement seats_left in class_ptr
+            sem_post(sem_des);
             sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             cout << pname << " SOLD SEAT -- " << class_ptr->seats_left << " left" << endl; //display message
         } else {
             all_out++; //increment all_out to get out of while loop
             cout << pname << " sees no seats left" << endl; //display message 
         }
+        // sem_post(sem);
         sleep ( (unsigned)rand()%10 + 1); //sleep process for a random 1 - 10 amount of time
-    }
 
+    }
 }
 
 void rpterror(char* string) {
