@@ -1,7 +1,7 @@
 /*
 Daniel Son
 CECS 326 - Shui Lam
-Assignment 3 - shmp1 and shmc1
+Assignment 4 - shmp1 and shmc1 revised
 
 file: registration.h
 */
