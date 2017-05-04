@@ -9,7 +9,7 @@ As you have come to understand, the shmp1.cpp and shmc1.cpp you ran in Assignmen
 Two implementations of semaphore are commonly available on most distributions of UNIX and Linux operating systems. The System V implementation includes semget(), semctl(), and semop(), and a struct sembuf used in the semop() calls, which are defined in <sys/sem.h>. The POSIX implementation includes sem_destroy(), sem_wait(), sem_post(), sem_open() for named semaphore and sem_init() for unnamed semaphore, which are defined in <semaphore.h>. You may use either one of these implementations. Details on the definition of these functions and their use may be found on Linux man pages.
 
 file: shmp1.cpp
-compile: g++ shmp1.cpp -o shmp1 -lpthread
+compile: g++ shmp1.cpp -o shmp1 -lpthread  -lrt
 */
 //Libraries to include
 #include "registration.h"
