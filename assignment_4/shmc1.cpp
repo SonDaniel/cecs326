@@ -34,7 +34,7 @@ void *memptr; //memory pointer variable
 char *pname; //pname pointer variable
 int	shmid, ret; //shared memory id and ret variable
 
-sem_t *sem_des;
+sem_t sem_des;
 
 void rpterror(char *), srand(), perror(), sleep(); //declare function rpterror
 void sell_seats(); //declare sell_seats function
@@ -50,7 +50,7 @@ main(int argc, char* argv[]) {
     
     //Set memory pointer to attach to shared memory piece of shmid with address of 0 and flag 0
     memptr = shmat (shmid, (void *)0, 0);
-
+    sem_init(&sem_des,1, 1);
     if (memptr == (char *)-1 ) { //check o see if memory pointer was set
         rpterror ("shmat failed"); //print error
         exit(2); //exit program with error code 2
@@ -64,20 +64,19 @@ main(int argc, char* argv[]) {
 void sell_seats() {
     int all_out = 0; //declare variable with value 0
     srand((unsigned) getpid()); //get random process id
-    sem_des = sem_open("test", 0, 0644, 0);
     while(!all_out) {
-        
         if (class_ptr->seats_left > 0) {
-            sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
+            sem_wait(&sem_des);
+            // sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
+            
             class_ptr->seats_left--; //decrement seats_left in class_ptr
-            sem_post(sem_des);
-            sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
+            // sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             cout << pname << " SOLD SEAT -- " << class_ptr->seats_left << " left" << endl; //display message
+            sem_post(&sem_des);
         } else {
             all_out++; //increment all_out to get out of while loop
             cout << pname << " sees no seats left" << endl; //display message 
         }
-        // sem_post(sem);
         sleep ( (unsigned)rand()%10 + 1); //sleep process for a random 1 - 10 amount of time
 
     }
