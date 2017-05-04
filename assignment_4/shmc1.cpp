@@ -50,7 +50,7 @@ main(int argc, char* argv[]) {
     
     //Set memory pointer to attach to shared memory piece of shmid with address of 0 and flag 0
     memptr = shmat (shmid, (void *)0, 0);
-    sem_init(&sem_des,1, 1);
+    sem_init(&sem_des,1, 1); // initialize unnamed semaphore using sem_des. value init to 1
     if (memptr == (char *)-1 ) { //check o see if memory pointer was set
         rpterror ("shmat failed"); //print error
         exit(2); //exit program with error code 2
@@ -65,20 +65,19 @@ void sell_seats() {
     int all_out = 0; //declare variable with value 0
     srand((unsigned) getpid()); //get random process id
     while(!all_out) {
+        sem_wait(&sem_des); // wait until the semaphore is released so others can enter critical section
         if (class_ptr->seats_left > 0) {
-            sem_wait(&sem_des);
-            // sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
-            
+            sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             class_ptr->seats_left--; //decrement seats_left in class_ptr
-            // sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
+            //sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             cout << pname << " SOLD SEAT -- " << class_ptr->seats_left << " left" << endl; //display message
-            sem_post(&sem_des);
+            sem_post(&sem_des); // critical section is done. release semaphore
         } else {
+            sem_post(&sem_des); // critical section is done. release semaphore.
             all_out++; //increment all_out to get out of while loop
             cout << pname << " sees no seats left" << endl; //display message 
         }
         sleep ( (unsigned)rand()%10 + 1); //sleep process for a random 1 - 10 amount of time
-
     }
 }
 

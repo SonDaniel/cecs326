@@ -32,7 +32,7 @@ CLASS myclass = { "1001", "120186", "Operating Systems", 15 }; //Creating class 
 #define NCHILD	3   //defining constant variable
 int	shm_init( void * ); //declaring shm_init function that takes in pointer
 
-sem_t mutex;
+sem_t mutex; // create global semaphore data type that will be used
 
 //declaring wait_and_wrap_up function that takes in array of int, pointer, and int
 void wait_and_wrap_up( int [], void *, int );  
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     shmid = shm_init(shm_ptr);  //call shm_init function and get back share memory id
     sprintf (ascshmid, "%d", shmid);
 
-    sem_init(&mutex,1, 1);
+    sem_init(&mutex,1, 1); //initialize unnamed semaphore with the value of 1 using variable, mutex.
 
     //Loop through NCHILD amount of times
     for (i = 0; i < NCHILD; i++) {
@@ -116,7 +116,7 @@ void wait_and_wrap_up(int child[], void *shm_ptr, int shmid) {
     shmdt (shm_ptr); //detach shared memory poitner
     shmctl (shmid, IPC_RMID, (struct shmid_ds *) 0); //clear shared memory 
 
-    sem_destroy(&mutex);
+    sem_destroy(&mutex); // clean up semaphore in reference to mutex variable
     exit (0); //exit program with code 0
 }
 
