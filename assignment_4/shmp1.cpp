@@ -1,7 +1,7 @@
 /*
 Daniel Son
 CECS 326 - Shui Lam
-Assignment 4 - shmp1 and shmc1 revised
+Assignment 4 - shmp1 and shmc1 revised with Semaphore
 
 Assignment Prompt:
 As you have come to understand, the shmp1.cpp and shmc1.cpp you ran in Assignment 3 have serious deficiency due to race condition. In this assignment you are to correct the problem using the semaphore mechanisms that Linux provides.

@@ -1,7 +1,7 @@
 /*
 Daniel Son
 CECS 326 - Shui Lam
-Assignment 4 - shmp1 and shmc1 revised
+Assignment 4 - shmp1 and shmc1 revised with Semaphore
 
 Assignment Prompt:
 As you have come to understand, the shmp1.cpp and shmc1.cpp you ran in Assignment 3 have serious deficiency due to race condition. In this assignment you are to correct the problem using the semaphore mechanisms that Linux provides.
@@ -34,7 +34,7 @@ void *memptr; //memory pointer variable
 char *pname; //pname pointer variable
 int	shmid, ret; //shared memory id and ret variable
 
-sem_t sem_des;
+sem_t sem_des; // create semaphore data type
 
 void rpterror(char *), srand(), perror(), sleep(); //declare function rpterror
 void sell_seats(); //declare sell_seats function
@@ -69,7 +69,7 @@ void sell_seats() {
         if (class_ptr->seats_left > 0) {
             sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             class_ptr->seats_left--; //decrement seats_left in class_ptr
-            //sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
+            // sleep ( (unsigned)rand()%5 + 1); //wait from a random 1 - 5 amount of time
             cout << pname << " SOLD SEAT -- " << class_ptr->seats_left << " left" << endl; //display message
             sem_post(&sem_des); // critical section is done. release semaphore
         } else {
